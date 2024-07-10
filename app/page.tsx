@@ -6,7 +6,7 @@ import { UserInfo } from "@/types/user";
 
 export default async function Home() {
   const user = await getCurrentUser() as UserInfo;
-  console.log(user);
+  console.log("user==>", user);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -48,13 +48,13 @@ export default async function Home() {
 
       <div>
         <div className="flex">
-          {user?.avatar ? (
+          {user?.picture ? (
             <>
               {" "}
               Current User:{" "}
               <Image
                 className="relative rounded-full ml-3 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-                src={user.avatar}
+                src={user.picture}
                 alt="Next.js Logo"
                 width={36}
                 height={36}

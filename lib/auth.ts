@@ -1,8 +1,6 @@
-import NextAuth,{ NextAuthOptions } from "next-auth" 
+import NextAuth, { NextAuthOptions } from "next-auth"
 import GithubProvider from 'next-auth/providers/github';
-import prisma from "@/lib/prisma";
-import { UserInfo } from "@/types/user";
-
+ 
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -26,37 +24,9 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     session: async ({ session, token }) => {
-      const res = await prisma.user.upsert({
-        where: {
-          sub: token.sub
-        },
-        update: {
-          // 使用token中的数据
-          username: token.name || '',
-          avatar: token.picture || '',
-          email: token.email || ''
-        },
-        create: {
-          // 使用token中的数据 
-          sub: token.sub || '',
-          username: token.name || '',
-          avatar: token.picture || '',
-          email: token.email || '',
-          platform: 'github',
-        }
-      })
-      if (res) {
-        session.user = {
-          sub: res.sub,
-          username: res.username,
-          avatar: res.avatar,
-          platform: res.platform,
-          email: res.email,
-        } as UserInfo
-      }
-      return session
+      return token
     }
   },
 }
-
+ 
 export default NextAuth(authOptions)
